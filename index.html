@@ -10,7 +10,6 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      display: none; /* Hide the table initially */
     }
 
     th, td {
@@ -64,8 +63,7 @@
     const searchForm = document.getElementById('searchForm');
     const queryInput = document.getElementById('query');
     const resultsTableBody = document.querySelector('#results-table tbody');
-    const resultsTableHeader = document.querySelector('#results-table thead');
-    const resultsTable = document.querySelector('#results-table'); // Reference to the whole table (including the tbody and thead)
+    const resultsTableHeader = document.querySelector('#results-table thead'); // Reference to table header
 
     async function fetchData() {
       try {
@@ -87,28 +85,33 @@
         item.procedure.toLowerCase().includes(query.toLowerCase())
       );
 
-      // Show the table if there are results, else hide it
+      // Hide or show the table header based on the results
       if (filteredResults.length === 0) {
-        resultsTable.style.display = 'none'; // Hide the table if no results
+        resultsTableHeader.style.display = 'none'; // Hide the header if no results
+      } else {
+        resultsTableHeader.style.display = ''; // Show the header if there are results
+      }
+
+      // Populate the table with filtered results
+      filteredResults.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.procedure}</td>
+          <td>${item.hospital}</td>
+          <td>${item.cost}</td>
+        `;
+        resultsTableBody.appendChild(row);
+      });
+
+
+      if (filteredResults.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = `<td colspan="3">No results found for "${query}"</td>`;
         resultsTableBody.appendChild(row);
-      } else {
-        resultsTable.style.display = ''; // Show the table if there are results
-        resultsTableHeader.style.display = ''; // Ensure header is visible
-        filteredResults.forEach(item => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${item.procedure}</td>
-            <td>${item.hospital}</td>
-            <td>${item.cost}</td>
-          `;
-          resultsTableBody.appendChild(row);
-        });
       }
     }
 
-    // Event listener for form submission
+
     searchForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const query = queryInput.value.trim();
