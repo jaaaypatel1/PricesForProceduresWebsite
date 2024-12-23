@@ -63,6 +63,7 @@
     const searchForm = document.getElementById('searchForm');
     const queryInput = document.getElementById('query');
     const resultsTableBody = document.querySelector('#results-table tbody');
+    const resultsTableHeader = document.querySelector('#results-table thead'); // Reference to table header
 
     async function fetchData() {
       try {
@@ -75,16 +76,23 @@
       }
     }
 
-    
     async function displayResults(query) {
-     
+      // Clear previous results
       resultsTableBody.innerHTML = '';
 
       const data = await fetchData();
       const filteredResults = data.filter(item =>
         item.procedure.toLowerCase().includes(query.toLowerCase())
       );
-      
+
+      // Hide or show the table header based on the results
+      if (filteredResults.length === 0) {
+        resultsTableHeader.style.display = 'none'; // Hide the header if no results
+      } else {
+        resultsTableHeader.style.display = ''; // Show the header if there are results
+      }
+
+      // Populate the table with filtered results
       filteredResults.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -111,7 +119,6 @@
         displayResults(query);
       }
     });
-
   </script>
 </body>
 </html>
