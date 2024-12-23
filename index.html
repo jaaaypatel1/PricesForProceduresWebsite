@@ -60,30 +60,31 @@
   </footer>
 
   <script>
-    // Example dataset (replace this with actual data or API calls)
-    const data = [
-      { procedure: 'MRI Scan', hospital: 'City Hospital', cost: '$500' },
-      { procedure: 'MRI Scan', hospital: 'Green Valley Clinic', cost: '$450' },
-      { procedure: 'MRI Scan', hospital: 'Downtown Health Center', cost: '$550' },
-      { procedure: 'CT Scan', hospital: 'City Hospital', cost: '$300' },
-      { procedure: 'X-Ray', hospital: 'Green Valley Clinic', cost: '$100' },
-    ];
-
     const searchForm = document.getElementById('searchForm');
     const queryInput = document.getElementById('query');
     const resultsTableBody = document.querySelector('#results-table tbody');
 
-    // Function to display results based on search query
-    function displayResults(query) {
-      // Clear previous results
+    async function fetchData() {
+      try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+      }
+    }
+
+    
+    async function displayResults(query) {
+     
       resultsTableBody.innerHTML = '';
 
-      // Filter data based on the query
+      const data = await fetchData();
       const filteredResults = data.filter(item =>
         item.procedure.toLowerCase().includes(query.toLowerCase())
       );
-
-      // Populate the table with filtered results
+      
       filteredResults.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -110,6 +111,7 @@
         displayResults(query);
       }
     });
+
   </script>
 </body>
 </html>
