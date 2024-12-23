@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prices For Procedures</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+  <header>
+    <h1>Prices For Procedures</h1>
+  </header>
+
+  <main>
+    <!-- Search Feature -->
+    <section class="search">
+      <h2>Search</h2>
+      <form id="searchForm">
+        <input type="text" name="query" placeholder="Search here..." required>
+        <button type="submit">Search</button>
+      </form>
+      <div id="results"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Prices For Procedures</p>
+  </footer>
+
+  <script>
+    // Handle Search Form Submission
+    document.getElementById('searchForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const query = e.target.query.value;
+      
+      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+      const data = await response.json();
+
+      document.getElementById('results').innerHTML = data.results
+        .map(item => `<p>${item}</p>`)
+        .join('');
+    });
+  </script>
+</body>
+</html>
