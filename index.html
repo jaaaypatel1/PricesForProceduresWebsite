@@ -103,7 +103,7 @@
         resultsTableBody.appendChild(row);
       });
 
-
+      // If no results are found
       if (filteredResults.length === 0) {
         const row = document.createElement('tr');
         row.innerHTML = `<td colspan="3">No results found for "${query}"</td>`;
@@ -111,7 +111,7 @@
       }
     }
 
-
+    // Event listener for form submission
     searchForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const query = queryInput.value.trim();
