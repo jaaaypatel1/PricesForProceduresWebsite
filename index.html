@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prices For Procedures</title>
   <link rel="stylesheet" href="main.css">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -16,15 +33,83 @@
     <section class="search">
       <h2>Search</h2>
       <form id="searchForm">
-        <input type="text" name="query" placeholder="Search here..." required>
+        <input type="text" name="query" id="query" placeholder="Search here..." required>
         <button type="submit">Search</button>
       </form>
-      <div id="results"></div>
+
+      <!-- Table to display search results -->
+      <div id="results-container">
+        <table id="results-table">
+          <thead>
+            <tr>
+              <th>Procedure</th>
+              <th>Hospital</th>
+              <th>Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Search results will appear here -->
+          </tbody>
+        </table>
+      </div>
     </section>
   </main>
   
   <footer>
     <p>&copy; 2024 Prices For Procedures</p>
   </footer>
+
+  <script>
+    // Example dataset (replace this with actual data or API calls)
+    const data = [
+      { procedure: 'MRI Scan', hospital: 'City Hospital', cost: '$500' },
+      { procedure: 'MRI Scan', hospital: 'Green Valley Clinic', cost: '$450' },
+      { procedure: 'MRI Scan', hospital: 'Downtown Health Center', cost: '$550' },
+      { procedure: 'CT Scan', hospital: 'City Hospital', cost: '$300' },
+      { procedure: 'X-Ray', hospital: 'Green Valley Clinic', cost: '$100' },
+    ];
+
+    const searchForm = document.getElementById('searchForm');
+    const queryInput = document.getElementById('query');
+    const resultsTableBody = document.querySelector('#results-table tbody');
+
+    // Function to display results based on search query
+    function displayResults(query) {
+      // Clear previous results
+      resultsTableBody.innerHTML = '';
+
+      // Filter data based on the query
+      const filteredResults = data.filter(item =>
+        item.procedure.toLowerCase().includes(query.toLowerCase())
+      );
+
+      // Populate the table with filtered results
+      filteredResults.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.procedure}</td>
+          <td>${item.hospital}</td>
+          <td>${item.cost}</td>
+        `;
+        resultsTableBody.appendChild(row);
+      });
+
+      // If no results are found
+      if (filteredResults.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="3">No results found for "${query}"</td>`;
+        resultsTableBody.appendChild(row);
+      }
+    }
+
+    // Event listener for form submission
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = queryInput.value.trim();
+      if (query) {
+        displayResults(query);
+      }
+    });
+  </script>
 </body>
 </html>

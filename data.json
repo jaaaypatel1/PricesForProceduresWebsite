@@ -1,0 +1,5 @@
+[
+    { "procedure": "MRI Scan", "hospital": "City Hospital", "cost": "$500" },
+    { "procedure": "CT Scan", "hospital": "City Hospital", "cost": "$300" },
+    { "procedure": "X-Ray", "hospital": "Green Valley Clinic", "cost": "$100" }
+]
