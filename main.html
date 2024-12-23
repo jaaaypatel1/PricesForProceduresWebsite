@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prices For Procedures</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
   <header>
@@ -23,24 +22,9 @@
       <div id="results"></div>
     </section>
   </main>
-
+  
   <footer>
     <p>&copy; 2024 Prices For Procedures</p>
   </footer>
-
-  <script>
-    // Handle Search Form Submission
-    document.getElementById('searchForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const query = e.target.query.value;
-      
-      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
-      const data = await response.json();
-
-      document.getElementById('results').innerHTML = data.results
-        .map(item => `<p>${item}</p>`)
-        .join('');
-    });
-  </script>
 </body>
 </html>
