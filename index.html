@@ -95,24 +95,22 @@
     resultsTableBody.innerHTML = '';
 
     const data = await fetchData();
-    const filteredResults = data.filter(item => {
-      // Check description, hospital_name, and any addresses
-      const matchesDescription = item.description.toLowerCase().includes(query.toLowerCase());
-      const matchesHospitalName = item.hospital_name.toLowerCase().includes(query.toLowerCase());
-      
-      // If hospital_address is an array, check each address individually
-      const matchesAddress = Array.isArray(item.hospital_address)
-        ? item.hospital_address.some(address => address.toLowerCase().includes(query.toLowerCase()))
-        : item.hospital_address.toLowerCase().includes(query.toLowerCase());
 
-      return matchesDescription || matchesHospitalName || matchesAddress;
-    });
+    // Filter results based on query
+    const filteredResults = data.filter(item =>
+      item.description.toLowerCase().includes(query.toLowerCase()) ||
+      item.hospital_name.toLowerCase().includes(query.toLowerCase()) ||
+      (typeof item.hospital_address === 'string'
+        ? item.hospital_address.toLowerCase().includes(query.toLowerCase())  // If it's a string
+        : item.hospital_address.some(address => address.toLowerCase().includes(query.toLowerCase()))  // If it's an array
+      )
+    );
 
-    // Hide or show the table header based on the results
+    // Hide or show the table header based on results
     if (filteredResults.length === 0) {
-      resultsTableHeader.style.display = 'none'; // Hide the header if no results
+      resultsTableHeader.style.display = 'none'; // Hide header if no results
     } else {
-      resultsTableHeader.style.display = ''; // Show the header if there are results
+      resultsTableHeader.style.display = ''; // Show header if there are results
     }
 
     // Populate the table with filtered results
@@ -131,7 +129,7 @@
       resultsTableBody.appendChild(row);
     });
 
-    // If no results are found
+    // If no results found
     if (filteredResults.length === 0) {
       const row = document.createElement('tr');
       row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
