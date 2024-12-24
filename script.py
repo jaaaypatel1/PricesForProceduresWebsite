@@ -2,21 +2,20 @@ import json
 
 def reformat_hospital_data(input_file, output_file):
     """
-    Processes a JSON file containing hospital data. Handles cases where the input is a list.
-    Reformats data to include hospital name and address as a single string for each item.
+    Processes a JSON file containing hospital data. Reformats data to include 
+    hospital name and address as a single string for each item.
     """
     # Read the input JSON file
     with open(input_file, 'r') as file:
         data = json.load(file)
     
-    # Ensure the input JSON is a dictionary or handle the first element if it's a list
+    # Ensure the input JSON is a list and use the first element if it's an array
     if isinstance(data, list):
-        data = data[0]  # Assume hospital data is in the first element of the list
+        data = data[0]  # Assuming hospital data is in the first element of the list
     
     # Extract hospital information
     hospital_name = data.get("hospital_name", "")
-    hospital_address_list = list(set(data.get("hospital_address", [])))  # Deduplicate addresses
-    hospital_address = "; ".join(hospital_address_list)  # Combine into a single string
+    hospital_address = data.get("hospital_address", "")  # Address should be a single string now
     
     # Process the items
     items = []
