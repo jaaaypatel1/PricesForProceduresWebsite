@@ -91,46 +91,54 @@
     }
 
     async function displayResults(query) {
-      // Clear previous results
-      resultsTableBody.innerHTML = '';
+    // Clear previous results
+    resultsTableBody.innerHTML = '';
 
-      const data = await fetchData();
-      const filteredResults = data.filter(item =>
-        item.description.toLowerCase().includes(query.toLowerCase()) ||
-        item.hospital_name.toLowerCase().includes(query.toLowerCase()) ||
-        item.hospital_address.toLowerCase().includes(query.toLowerCase())
-      );
+    const data = await fetchData();
+    const filteredResults = data.filter(item => {
+      // Check description, hospital_name, and any addresses
+      const matchesDescription = item.description.toLowerCase().includes(query.toLowerCase());
+      const matchesHospitalName = item.hospital_name.toLowerCase().includes(query.toLowerCase());
+      
+      // If hospital_address is an array, check each address individually
+      const matchesAddress = Array.isArray(item.hospital_address)
+        ? item.hospital_address.some(address => address.toLowerCase().includes(query.toLowerCase()))
+        : item.hospital_address.toLowerCase().includes(query.toLowerCase());
 
-      // Hide or show the table header based on the results
-      if (filteredResults.length === 0) {
-        resultsTableHeader.style.display = 'none'; // Hide the header if no results
-      } else {
-        resultsTableHeader.style.display = ''; // Show the header if there are results
-      }
+      return matchesDescription || matchesHospitalName || matchesAddress;
+    });
 
-      // Populate the table with filtered results
-      filteredResults.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.hospital_name}</td>
-          <td>${formatAddress(item.hospital_address)}</td>
-          <td>${item.description}</td>
-          <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
-          <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
-          <td>${item.billing_class}</td>
-          <td>${item.notes}</td>
-          <td>${item.gross_charge_types}</td>
-        `;
-        resultsTableBody.appendChild(row);
-      });
-
-      // If no results are found
-      if (filteredResults.length === 0) {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
-        resultsTableBody.appendChild(row);
-      }
+    // Hide or show the table header based on the results
+    if (filteredResults.length === 0) {
+      resultsTableHeader.style.display = 'none'; // Hide the header if no results
+    } else {
+      resultsTableHeader.style.display = ''; // Show the header if there are results
     }
+
+    // Populate the table with filtered results
+    filteredResults.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.hospital_name}</td>
+        <td>${Array.isArray(item.hospital_address) ? item.hospital_address.join('<br>') : item.hospital_address}</td>
+        <td>${item.description}</td>
+        <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
+        <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
+        <td>${item.billing_class}</td>
+        <td>${item.notes}</td>
+        <td>${item.gross_charge_types}</td>
+      `;
+      resultsTableBody.appendChild(row);
+    });
+
+    // If no results are found
+    if (filteredResults.length === 0) {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
+      resultsTableBody.appendChild(row);
+    }
+  }
+
 
     // Event listener for form submission
     searchForm.addEventListener('submit', (event) => {
