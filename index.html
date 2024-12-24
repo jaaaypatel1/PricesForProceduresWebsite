@@ -81,6 +81,15 @@
       }
     }
 
+    function formatAddress(address) {
+      // Check if address is a string or an array of strings
+      if (Array.isArray(address)) {
+        return address.join('<br>');  // Join array elements with a line break
+      } else {
+        return address;  // Return the string as is
+      }
+    }
+
     async function displayResults(query) {
       // Clear previous results
       resultsTableBody.innerHTML = '';
@@ -104,7 +113,7 @@
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${item.hospital_name}</td>
-          <td>${item.hospital_address}</td>
+          <td>${formatAddress(item.hospital_address)}</td>
           <td>${item.description}</td>
           <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
           <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
