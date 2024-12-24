@@ -21,6 +21,11 @@
     th {
       background-color: #f4f4f4;
     }
+
+    .result-count {
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -36,6 +41,9 @@
         <input type="text" name="query" id="query" placeholder="Search here..." required>
         <button type="submit">Search</button>
       </form>
+
+      <!-- Result Count -->
+      <p id="resultCount" class="result-count">Results found: 0</p>
 
       <!-- Table to display search results -->
       <div id="results-container">
@@ -69,6 +77,7 @@
     const queryInput = document.getElementById('query');
     const resultsTableBody = document.querySelector('#results-table tbody');
     const resultsTableHeader = document.querySelector('#results-table thead'); // Reference to table header
+    const resultCount = document.getElementById('resultCount'); // Result count element
 
     async function fetchData() {
       try {
@@ -91,52 +100,55 @@
     }
 
     async function displayResults(query) {
-    // Clear previous results
-    resultsTableBody.innerHTML = '';
+      // Clear previous results
+      resultsTableBody.innerHTML = '';
+      resultCount.textContent = 'Results found: 0'; // Reset result count
 
-    const data = await fetchData();
+      const data = await fetchData();
 
-    // Filter results based on query
-    const filteredResults = data.filter(item =>
-      item.description.toLowerCase().includes(query.toLowerCase()) ||
-      item.hospital_name.toLowerCase().includes(query.toLowerCase()) ||
-      (typeof item.hospital_address === 'string'
-        ? item.hospital_address.toLowerCase().includes(query.toLowerCase())  // If it's a string
-        : item.hospital_address.some(address => address.toLowerCase().includes(query.toLowerCase()))  // If it's an array
-      )
-    );
+      // Filter results based on query
+      const filteredResults = data.filter(item =>
+        item.description.toLowerCase().includes(query.toLowerCase()) ||
+        item.hospital_name.toLowerCase().includes(query.toLowerCase()) ||
+        (typeof item.hospital_address === 'string'
+          ? item.hospital_address.toLowerCase().includes(query.toLowerCase())  // If it's a string
+          : item.hospital_address.some(address => address.toLowerCase().includes(query.toLowerCase()))  // If it's an array
+        )
+      );
 
-    // Hide or show the table header based on results
-    if (filteredResults.length === 0) {
-      resultsTableHeader.style.display = 'none'; // Hide header if no results
-    } else {
-      resultsTableHeader.style.display = ''; // Show header if there are results
+      // Update result count
+      resultCount.textContent = `Results found: ${filteredResults.length}`;
+
+      // Hide or show the table header based on results
+      if (filteredResults.length === 0) {
+        resultsTableHeader.style.display = 'none'; // Hide header if no results
+      } else {
+        resultsTableHeader.style.display = ''; // Show header if there are results
+      }
+
+      // Populate the table with filtered results
+      filteredResults.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.hospital_name}</td>
+          <td>${Array.isArray(item.hospital_address) ? item.hospital_address.join('<br>') : item.hospital_address}</td>
+          <td>${item.description}</td>
+          <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.billing_class}</td>
+          <td>${item.notes}</td>
+          <td>${item.gross_charge_types}</td>
+        `;
+        resultsTableBody.appendChild(row);
+      });
+
+      // If no results found
+      if (filteredResults.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
+        resultsTableBody.appendChild(row);
+      }
     }
-
-    // Populate the table with filtered results
-    filteredResults.forEach(item => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${item.hospital_name}</td>
-        <td>${Array.isArray(item.hospital_address) ? item.hospital_address.join('<br>') : item.hospital_address}</td>
-        <td>${item.description}</td>
-        <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
-        <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
-        <td>${item.billing_class}</td>
-        <td>${item.notes}</td>
-        <td>${item.gross_charge_types}</td>
-      `;
-      resultsTableBody.appendChild(row);
-    });
-
-    // If no results found
-    if (filteredResults.length === 0) {
-      const row = document.createElement('tr');
-      row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
-      resultsTableBody.appendChild(row);
-    }
-  }
-
 
     // Event listener for form submission
     searchForm.addEventListener('submit', (event) => {
