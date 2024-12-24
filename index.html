@@ -42,9 +42,14 @@
         <table id="results-table">
           <thead>
             <tr>
-              <th>Procedure</th>
-              <th>Hospital</th>
-              <th>Cost</th>
+              <th>Hospital Name</th>
+              <th>Hospital Address</th>
+              <th>Description</th>
+              <th>Gross Charge</th>
+              <th>Discounted Cash</th>
+              <th>Billing Class</th>
+              <th>Notes</th>
+              <th>Gross Charge Types</th>
             </tr>
           </thead>
           <tbody>
@@ -82,7 +87,9 @@
 
       const data = await fetchData();
       const filteredResults = data.filter(item =>
-        item.procedure.toLowerCase().includes(query.toLowerCase())
+        item.description.toLowerCase().includes(query.toLowerCase()) ||
+        item.hospital_name.toLowerCase().includes(query.toLowerCase()) ||
+        item.hospital_address.toLowerCase().includes(query.toLowerCase())
       );
 
       // Hide or show the table header based on the results
@@ -96,9 +103,14 @@
       filteredResults.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${item.procedure}</td>
-          <td>${item.hospital}</td>
-          <td>${item.cost}</td>
+          <td>${item.hospital_name}</td>
+          <td>${item.hospital_address}</td>
+          <td>${item.description}</td>
+          <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.billing_class}</td>
+          <td>${item.notes}</td>
+          <td>${item.gross_charge_types}</td>
         `;
         resultsTableBody.appendChild(row);
       });
@@ -106,7 +118,7 @@
       // If no results are found
       if (filteredResults.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="3">No results found for "${query}"</td>`;
+        row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
         resultsTableBody.appendChild(row);
       }
     }
