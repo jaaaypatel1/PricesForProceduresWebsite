@@ -26,11 +26,30 @@
       margin-top: 10px;
       font-weight: bold;
     }
+
+    header {
+      display: flex;         
+      justify-content: space-between;
+      align-items: center;  
+      padding: 20px;
+    }
+
+    .header-link { 
+    color:rgb(255, 255, 255);  
+    font-size: 16px;
+    padding: 20px;
+    }
+
+    .header-link:hover {
+      text-decoration: underline;  /* Underline the link on hover */
+      color:rgb(140, 140, 140);              /* Change the color when hovered (optional) */
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Prices For Procedures</h1>
+    <a href="about_us.html" class="header-link">About Us</a> <!-- Link in top-right -->
   </header>
 
   <main>
