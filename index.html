@@ -92,88 +92,63 @@
   </footer>
 
   <script>
-    const searchForm = document.getElementById('searchForm');
-    const queryInput = document.getElementById('query');
-    const resultsTableBody = document.querySelector('#results-table tbody');
-    const resultsTableHeader = document.querySelector('#results-table thead'); // Reference to table header
-    const resultCount = document.getElementById('resultCount'); // Result count element
+  const searchForm = document.getElementById('searchForm');
+  const queryInput = document.getElementById('query');
+  const resultsTableBody = document.querySelector('#results-table tbody');
+  const resultCount = document.getElementById('resultCount'); // Result count element
 
-    async function fetchData() {
+  async function fetchData() {
   try {
-    const response = await fetch('data_optimized.json');
+    const response = await fetch('data.json');
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     return {};
+    }
   }
-}
 
-async function displayResults(query) {
-  resultsTableBody.innerHTML = '';
-  resultCount.textContent = 'Results found: 0';
+  async function displayResults(query) {
+    resultsTableBody.innerHTML = '';
+    resultCount.textContent = 'Results found: 0';
 
-  const data = await fetchData();
-  if (!data.charges) return;
+    const data = await fetchData();
+    if (!data.charges) return;
 
-  const filteredResults = data.charges.filter(item =>
-    item.desc.toLowerCase().includes(query.toLowerCase())
-  );
+    const filteredResults = data.charges.filter(item =>
+      item.desc.toLowerCase().includes(query.toLowerCase())
+    );
 
-  resultCount.textContent = `Results found: ${filteredResults.length}`;
+    resultCount.textContent = `Results found: ${filteredResults.length}`;
 
-  filteredResults.forEach(item => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${data.hospital.name}</td>
-      <td>${data.hospital.addr}</td>
-      <td>${item.desc}</td>
-      <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
-      <td>${item.billing || 'N/A'}</td>
-      <td>${item.notes || 'N/A'}</td>
-      <td>${item.type || 'N/A'}</td>
-    `;
-    resultsTableBody.appendChild(row);
+    // Loop over filtered results and add rows to the table
+    filteredResults.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${data.name}</td>
+        <td>${data.addr}</td>
+        <td>${item.desc}</td>
+        <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
+        <td>${item.billing || 'N/A'}</td>
+        <td>${item.notes || 'N/A'}</td>
+        <td>${item.type || 'N/A'}</td>
+      `;
+      resultsTableBody.appendChild(row);
+    });
+
+    if (filteredResults.length === 0) {
+      resultsTableBody.innerHTML = `<tr><td colspan="7">No results found for "${query}"</td></tr>`;
+    }
+  }
+
+  searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = queryInput.value.trim();
+    if (query) {
+      displayResults(query);
+    }
   });
 
-  if (filteredResults.length === 0) {
-    resultsTableBody.innerHTML = `<tr><td colspan="7">No results found for "${query}"</td></tr>`;
-  }
-}
-
-
-      // Populate the table with filtered results
-      filteredResults.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.hospital_name}</td>
-          <td>${Array.isArray(item.hospital_address) ? item.hospital_address.join('<br>') : item.hospital_address}</td>
-          <td>${item.description}</td>
-          <td>${item.gross_charge !== null ? `$${item.gross_charge.toFixed(2)}` : 'N/A'}</td>
-          <td>${item.discounted_cash !== null ? `$${item.discounted_cash.toFixed(2)}` : 'N/A'}</td>
-          <td>${item.billing_class}</td>
-          <td>${item.notes}</td>
-          <td>${item.gross_charge_types}</td>
-        `;
-        resultsTableBody.appendChild(row);
-      });
-
-      // If no results found
-      if (filteredResults.length === 0) {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="8">No results found for "${query}"</td>`;
-        resultsTableBody.appendChild(row);
-      }
-    
-
-    // Event listener for form submission
-    searchForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const query = queryInput.value.trim();
-      if (query) {
-        displayResults(query);
-      }
-    });
   </script>
 </body>
 </html>
