@@ -93,31 +93,31 @@
 
   <script>
   const searchForm = document.getElementById('searchForm');
-  const queryInput = document.getElementById('query');
-  const resultsTableBody = document.querySelector('#results-table tbody');
-  const resultCount = document.getElementById('resultCount'); // Result count element
+const queryInput = document.getElementById('query');
+const resultsTableBody = document.querySelector('#results-table tbody');
+const resultCount = document.getElementById('resultCount'); // Result count element
 
-  async function fetchData() {
+async function fetchData() {
   try {
     const response = await fetch('data.json');
     const data = await response.json();
-    return data;
+    return data; // No 'hospitals' key; it's an array directly
   } catch (error) {
     console.error('Error fetching data:', error);
-    return {};
-    }
+    return [];
   }
+}
 
-  async function displayResults(query) {
+async function displayResults(query) {
   resultsTableBody.innerHTML = ''; 
   resultCount.textContent = 'Results found: 0';
 
   const data = await fetchData();
-  if (!data.hospitals) return; // Ensure 'hospitals' exists in JSON
+  if (!Array.isArray(data)) return; // Ensure data is an array
 
   let totalResults = 0; // Count results across all hospitals
 
-  data.hospitals.forEach(hospital => {
+  data.forEach(hospital => { // Loop over hospital objects
     const hospitalName = hospital.name;
     const hospitalAddress = hospital.addr;
 
@@ -135,10 +135,10 @@
         <td>${hospitalAddress}</td>
         <td>${item.desc}</td>
         <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
-        <td>${item.discounted_cash || 'N/A'}</td>
-        <td>${item.billing || 'N/A'}</td>
-        <td>${item.notes || 'N/A'}</td>
-        <td>${item.type || 'N/A'}</td>
+        <td>N/A</td> <!-- Placeholder for missing properties -->
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>N/A</td>
       `;
       resultsTableBody.appendChild(row);
     });
@@ -150,7 +150,6 @@
     resultsTableBody.innerHTML = `<tr><td colspan="8">No results found for "${query}"</td></tr>`;
   }
 }
-  
 
   searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
