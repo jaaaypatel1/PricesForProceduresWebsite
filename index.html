@@ -16,6 +16,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      overflow-x: auto;
     }
 
     th, td {
@@ -102,7 +103,9 @@
     input[type="text"] {
       padding: 10px;
       font-size: 18px;
-      width: 300px;
+      width: 100%;
+      max-width: 300px; /* Limit max width */
+      box-sizing: border-box;
     }
 
     button {
@@ -112,12 +115,50 @@
       color: white;
       border: none;
       cursor: pointer;
+      width: 100%; /* Make button full-width on small screens */
+      max-width: 300px; /* Limit max width */
+      box-sizing: border-box;
     }
 
     button:hover {
       background-color: #0056b3;
     }
 
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-title {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      input[type="text"], button {
+        width: 100%;
+        max-width: 100%; /* Allow full width on smaller screens */
+      }
+
+      th, td {
+        font-size: 16px; /* Smaller text for mobile */
+        padding: 8px; /* Reduce padding for mobile */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-logo {
+        width: 80px; /* Adjust logo size for smaller screens */
+        height: 80px;
+      }
+
+      .header-title {
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
