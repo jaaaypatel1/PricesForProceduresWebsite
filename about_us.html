@@ -7,122 +7,118 @@
   <link rel="stylesheet" href="main.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
+      background-color: #ffffff;
       color: #333;
+      font-family: Arial, sans-serif;
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      background-color: #007BFF;
-      color: white;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
 
-    .header-logo {
-      width: 80px;
-      height: 80px;
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+      font-size: 18px;
     }
 
-    .header-title {
-      font-size: 28px;
-    }
-
-    .header-link {
-      color: white;
-      text-decoration: none;
-      padding: 15px;
-    }
-
-    .header-link:hover {
-      color: #ddd;
-      text-decoration: underline;
+    th {
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
     }
 
     .about-section {
-      margin: 20px auto;
+      margin-top: 20px;
       max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
       padding: 20px;
-      background-color: white;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
 
     .about-section p {
-      text-align: left;
       margin-bottom: 10px;
+      text-align: left;
     }
 
     h2 {
-      text-align: center;
       font-size: 26px;
-      color: #007BFF;
+      color: rgb(33, 33, 33);
+      margin-bottom: 20px;
+    }
+
+    header {
+      display: flex;         
+      justify-content: space-between;
+      align-items: center;  
+      padding: 5px;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      width: 100px; 
+      height: 100px;
+      margin-right: 0px;
+    }
+
+    .header-title {
+      font-size: 32px; /* Bigger text */
+      color: white;
+      text-decoration: none;
+    }
+
+    .header-title:hover {
+      text-decoration: underline;
+    }
+
+    .header-link { 
+      color: white;  
+      font-size: 20px;
+      padding: 20px;
+    }
+
+    .header-link:hover {
+      text-decoration: underline;  
+      color: #ffffff;
     }
 
     footer {
       text-align: center;
-      padding: 15px;
-      background-color: #007BFF;
-      color: white;
+      margin-top: 40px;
     }
 
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .header-logo {
-        width: 60px;
-        height: 60px;
-      }
-
-      .header-title {
-        font-size: 24px;
-      }
-
-      .header-link {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      .about-section {
-        padding: 15px;
-        margin: 15px;
-      }
-
-      h2 {
-        font-size: 22px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header-title {
-        font-size: 20px;
-      }
-
-      .about-section p {
-        font-size: 14px;
-      }
-    }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Website Logo" class="header-logo">
-    <h1 class="header-title">Prices For Procedures</h1>
+    <a href="index.html" class="header-content">
+      <img src="logo.png" alt="Website Logo" class="header-logo">
+      <h1 class="header-title">Prices For Procedures</h1>
+    </a>
     <a href="index.html" class="header-link">Home</a>
   </header>
 
-  <section class="about-section">
-    <h2>About Us</h2>
-    <p>Welcome to Prices For Procedures, your go-to resource for finding the prices of medical procedures at hospitals across the country.</p>
-    <p>We aim to provide transparent, easy-to-access pricing information so you can make informed healthcare decisions. Our mission is to help you compare prices for different procedures and medications at hospitals near you.</p>
-  </section>
+  <main>
+    <!-- About Us Section -->
+    <section class="about-section">
+      <h2>About Us</h2>
+      <p>Welcome to Prices For Procedures. Our mission is to provide accurate and transparent pricing information for medical procedures across various hospitals. We strive to empower patients with the knowledge they need to make informed decisions regarding their healthcare expenses.</p>
+
+      <p>Our team consists of healthcare professionals, data scientists, and engineers working together to ensure that we collect, analyze, and present the most up-to-date and reliable pricing information. We understand how important it is for individuals to access transparent pricing, and we are committed to helping patients make well-informed choices based on comprehensive data.</p>
+
+      <p>Our data is sourced from a variety of reputable hospitals, and we ensure the information is regularly updated to reflect the latest pricing changes. We aim to improve healthcare transparency and create a platform where patients can find answers to their questions regarding the costs of medical procedures.</p>
+
+      <p>If you have any questions or suggestions, feel free to contact us at this email address <a href="mailto:someemailadress@gmail.com">HERE</a>.</p>
+    </section>  
+  </main>
 
   <footer>
     <p>&copy; 2024 Prices For Procedures</p>

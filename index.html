@@ -10,72 +10,6 @@
       background-color: #ffffff;
       color: #333;
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      display: flex;         
-      justify-content: space-between;
-      align-items: center;  
-      padding: 15px;
-      background-color: #007BFF;
-    }
-
-    .header-logo {
-      width: 80px;
-      height: 80px;
-    }
-
-    .header-title {
-      font-size: 28px;
-      color: white;
-      text-decoration: none;
-    }
-
-    .header-title:hover {
-      text-decoration: underline;
-    }
-
-    .header-link {
-      color: white;
-      font-size: 16px;
-      text-decoration: none;
-      padding: 15px;
-    }
-
-    .header-link:hover {
-      color: #ddd;
-      text-decoration: underline;
-    }
-
-    .search {
-      margin: 20px;
-      text-align: center;
-    }
-
-    .search input[type="text"] {
-      width: 100%;
-      max-width: 400px;
-      padding: 10px;
-      font-size: 18px;
-    }
-
-    .instructions {
-      background-color: #f8f9fa;
-      padding: 20px;
-      margin-top: 20px;
-      border-left: 5px solid #007BFF;
-      font-size: 16px;
-    }
-
-    .instructions ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    .instructions li {
-      margin-bottom: 10px;
     }
 
     table {
@@ -86,17 +20,94 @@
 
     th, td {
       border: 1px solid #ddd;
-      padding: 10px;
+      padding: 12px;
       text-align: left;
       font-size: 18px;
     }
 
     th {
-      background-color: #f4f4f4;
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
+    }
+
+    .result-container {
+      display: none; /* Initially hidden */
+      margin-top: 10px;
+    }
+
+    header {
+      display: flex;         
+      justify-content: space-between;
+      align-items: center;  
+      padding: 5px;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      width: 100px; 
+      height: 100px;
+      margin-right: 0px;
+    }
+
+    .header-title {
+      font-size: 32px; /* Bigger text */
+      color: white;
+      text-decoration: none;
+    }
+
+    .header-title:hover {
+      text-decoration: underline;
+    }
+
+    .header-link { 
+      color: white;  
+      font-size: 20px;
+      padding: 20px;
+    }
+
+    .header-link:hover {
+      text-decoration: underline;  
+      color: #ffffff;
+    }
+
+    .instructions {
+      margin-top: 15px;
+      padding: 15px;
+      background: #ffffff;
+      border-left: 5px solid #007BFF;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .instructions ul {
+      margin: 10px 0;
+      padding-left: 20px;
+      color: #333;
+    }
+
+    .instructions li {
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-size: 26px;
+      color: rgb(33, 33, 33);
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 300px;
     }
 
     button {
-      padding: 10px 20px;
+      padding: 10px 15px;
+      font-size: 18px;
       background-color: #007BFF;
       color: white;
       border: none;
@@ -107,61 +118,6 @@
       background-color: #0056b3;
     }
 
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .header-logo {
-        width: 60px;
-        height: 60px;
-      }
-
-      .header-title {
-        font-size: 24px;
-      }
-
-      .header-link {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      .search input[type="text"] {
-        width: 100%;
-        max-width: 300px;
-      }
-
-      .instructions {
-        font-size: 14px;
-      }
-
-      table {
-        font-size: 14px;
-      }
-
-      th, td {
-        padding: 8px;
-      }
-
-      button {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header-title {
-        font-size: 20px;
-      }
-
-      .search input[type="text"] {
-        max-width: 100%;
-      }
-
-      .instructions {
-        font-size: 12px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -174,6 +130,7 @@
   </header>
 
   <main>
+    <!-- Search Feature -->
     <section class="search">
       <h2>Search</h2>
       <form id="searchForm">
@@ -181,6 +138,7 @@
         <button type="submit">Search</button>
       </form>
 
+      <!-- Instructions -->
       <div class="instructions">
         <p><strong>How to Use This Website:</strong></p>
         <ul>
@@ -191,6 +149,7 @@
         </ul>
       </div>
 
+      <!-- Search Results (Hidden by Default) -->
       <div id="resultContainer" class="result-container">
         <p id="resultCount" class="result-count"></p>
         <table id="results-table">
@@ -210,77 +169,78 @@
       </div>
     </section>
   </main>
-
+  
   <footer>
     <p style="text-align: center;">&copy; 2024 Prices For Procedures</p>
   </footer>
 
   <script>
-    const searchForm = document.getElementById('searchForm');
-    const queryInput = document.getElementById('query');
-    const resultsTableBody = document.querySelector('#results-table tbody');
-    const resultCount = document.getElementById('resultCount');
-    const resultContainer = document.getElementById('resultContainer');
+  const searchForm = document.getElementById('searchForm');
+  const queryInput = document.getElementById('query');
+  const resultsTableBody = document.querySelector('#results-table tbody');
+  const resultCount = document.getElementById('resultCount');
+  const resultContainer = document.getElementById('resultContainer');
 
-    async function fetchData() {
-      try {
-        const response = await fetch('data.json');
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
-      }
+  async function fetchData() {
+    try {
+      const response = await fetch('data.json');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
     }
+  }
 
-    async function displayResults(query) {
-      resultsTableBody.innerHTML = ''; 
+  async function displayResults(query) {
+    resultsTableBody.innerHTML = ''; 
 
-      const data = await fetchData();
-      if (!Array.isArray(data)) return; 
+    const data = await fetchData();
+    if (!Array.isArray(data)) return; 
 
-      let totalResults = 0;
+    let totalResults = 0;
 
-      data.forEach(hospital => { 
-        const hospitalName = hospital.name;
-        const hospitalAddress = hospital.addr;
+    data.forEach(hospital => { 
+      const hospitalName = hospital.name;
+      const hospitalAddress = hospital.addr;
 
-        const filteredCharges = hospital.charges.filter(item =>
-          item.desc.toLowerCase().includes(query.toLowerCase())
-        );
+      const filteredCharges = hospital.charges.filter(item =>
+        item.desc.toLowerCase().includes(query.toLowerCase())
+      );
 
-        totalResults += filteredCharges.length;
+      totalResults += filteredCharges.length;
 
-        filteredCharges.forEach(item => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${hospitalName}</td>
-            <td>${hospitalAddress}</td>
-            <td>${item.desc}</td>
-            <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
-            <td>${item.discounted !== undefined ? `$${item.discounted.toFixed(2)}` : 'N/A'}</td>
-          `;
-          resultsTableBody.appendChild(row);
-        });
+      filteredCharges.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${hospitalName}</td>
+          <td>${hospitalAddress}</td>
+          <td>${item.desc}</td>
+          <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.discounted !== undefined ? `$${item.discounted.toFixed(2)}` : 'N/A'}</td>
+        `;
+        resultsTableBody.appendChild(row);
       });
-
-      if (totalResults > 0) {
-        resultCount.textContent = `Results found: ${totalResults}`;
-        resultContainer.style.display = 'block'; 
-      } else {
-        resultCount.textContent = `No results found for "${query}"`;
-        resultsTableBody.innerHTML = `<tr><td colspan="5">No matching results</td></tr>`;
-        resultContainer.style.display = 'block'; 
-      }
-    }
-
-    searchForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const query = queryInput.value.trim();
-      if (query) {
-        displayResults(query);
-      }
     });
+
+    if (totalResults > 0) {
+      resultCount.textContent = `Results found: ${totalResults}`;
+      resultContainer.style.display = 'block'; // Show results
+    } else {
+      resultCount.textContent = `No results found for "${query}"`;
+      resultsTableBody.innerHTML = `<tr><td colspan="5">No matching results</td></tr>`;
+      resultContainer.style.display = 'block'; // Show "No results" message
+    }
+  }
+
+  searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = queryInput.value.trim();
+    if (query) {
+      displayResults(query);
+    }
+  });
+
   </script>
 </body>
 </html>
