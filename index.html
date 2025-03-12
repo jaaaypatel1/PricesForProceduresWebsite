@@ -22,9 +22,9 @@
       background-color: #f4f4f4;
     }
 
-    .result-count {
+    .result-container {
+      display: none; /* Initially hidden */
       margin-top: 10px;
-      font-weight: bold;
     }
 
     header {
@@ -35,21 +35,28 @@
     }
 
     .header-link { 
-    color:rgb(255, 255, 255);  
-    font-size: 16px;
-    padding: 20px;
+      color: rgb(255, 255, 255);  
+      font-size: 16px;
+      padding: 20px;
     }
 
     .header-link:hover {
-      text-decoration: underline;  /* Underline the link on hover */
-      color:rgb(140, 140, 140);              /* Change the color when hovered (optional) */
+      text-decoration: underline;  
+      color: rgb(140, 140, 140);
+    }
+
+    .instructions {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-left: 5px solid #007BFF;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Prices For Procedures</h1>
-    <a href="about_us.html" class="header-link">About Us</a> <!-- Link in top-right -->
+    <a href="about_us.html" class="header-link">About Us</a>
   </header>
 
   <main>
@@ -57,15 +64,24 @@
     <section class="search">
       <h2>Search</h2>
       <form id="searchForm">
-        <input type="text" name="query" id="query" placeholder="Search here..." required>
+        <input type="text" name="query" id="query" placeholder="Search for a procedure or medication..." required>
         <button type="submit">Search</button>
       </form>
 
-      <!-- Result Count -->
-      <p id="resultCount" class="result-count">Results found: 0</p>
+      <!-- Instructions -->
+      <div class="instructions">
+        <p><strong>How to Use This Website:</strong></p>
+        <ul>
+          <li>Enter the name of a procedure or medication in the search bar above.</li>
+          <li>Click the <strong>Search</strong> button to see the results.</li>
+          <li>The table below will display relevant hospital names, addresses, and prices.</li>
+          <li>If no results are found, try refining your search term.</li>
+        </ul>
+      </div>
 
-      <!-- Table to display search results -->
-      <div id="results-container">
+      <!-- Search Results (Hidden by Default) -->
+      <div id="resultContainer" class="result-container">
+        <p id="resultCount" class="result-count"></p>
         <table id="results-table">
           <thead>
             <tr>
@@ -73,10 +89,7 @@
               <th>Hospital Address</th>
               <th>Description</th>
               <th>Gross Charge</th>
-              <th>Discounted Cash</th>
-              <th>Billing Class</th>
-              <th>Notes</th>
-              <th>Gross Charge Types</th>
+              <th>Discounted Price</th>
             </tr>
           </thead>
           <tbody>
@@ -93,63 +106,62 @@
 
   <script>
   const searchForm = document.getElementById('searchForm');
-const queryInput = document.getElementById('query');
-const resultsTableBody = document.querySelector('#results-table tbody');
-const resultCount = document.getElementById('resultCount'); // Result count element
+  const queryInput = document.getElementById('query');
+  const resultsTableBody = document.querySelector('#results-table tbody');
+  const resultCount = document.getElementById('resultCount');
+  const resultContainer = document.getElementById('resultContainer');
 
-async function fetchData() {
-  try {
-    const response = await fetch('data.json');
-    const data = await response.json();
-    return data; // No 'hospitals' key; it's an array directly
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return [];
+  async function fetchData() {
+    try {
+      const response = await fetch('data.json');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
+    }
   }
-}
 
-async function displayResults(query) {
-  resultsTableBody.innerHTML = ''; 
-  resultCount.textContent = 'Results found: 0';
+  async function displayResults(query) {
+    resultsTableBody.innerHTML = ''; 
 
-  const data = await fetchData();
-  if (!Array.isArray(data)) return; // Ensure data is an array
+    const data = await fetchData();
+    if (!Array.isArray(data)) return; 
 
-  let totalResults = 0; // Count results across all hospitals
+    let totalResults = 0;
 
-  data.forEach(hospital => { // Loop over hospital objects
-    const hospitalName = hospital.name;
-    const hospitalAddress = hospital.addr;
+    data.forEach(hospital => { 
+      const hospitalName = hospital.name;
+      const hospitalAddress = hospital.addr;
 
-    // Filter charges for this hospital
-    const filteredCharges = hospital.charges.filter(item =>
-      item.desc.toLowerCase().includes(query.toLowerCase())
-    );
+      const filteredCharges = hospital.charges.filter(item =>
+        item.desc.toLowerCase().includes(query.toLowerCase())
+      );
 
-    totalResults += filteredCharges.length; // Update total results
+      totalResults += filteredCharges.length;
 
-    filteredCharges.forEach(item => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${hospitalName}</td>
-        <td>${hospitalAddress}</td>
-        <td>${item.desc}</td>
-        <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
-        <td>N/A</td> <!-- Placeholder for missing properties -->
-        <td>N/A</td>
-        <td>N/A</td>
-        <td>N/A</td>
-      `;
-      resultsTableBody.appendChild(row);
+      filteredCharges.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${hospitalName}</td>
+          <td>${hospitalAddress}</td>
+          <td>${item.desc}</td>
+          <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.discounted !== undefined ? `$${item.discounted.toFixed(2)}` : 'N/A'}</td>
+        `;
+        resultsTableBody.appendChild(row);
+      });
     });
-  });
 
-  resultCount.textContent = `Results found: ${totalResults}`;
-
-  if (totalResults === 0) {
-    resultsTableBody.innerHTML = `<tr><td colspan="8">No results found for "${query}"</td></tr>`;
+    if (totalResults > 0) {
+      resultCount.textContent = `Results found: ${totalResults}`;
+      resultContainer.style.display = 'block'; // Show results
+    } else {
+      resultCount.textContent = `No results found for "${query}"`;
+      resultsTableBody.innerHTML = `<tr><td colspan="5">No matching results</td></tr>`;
+      resultContainer.style.display = 'block'; // Show "No results" message
+    }
   }
-}
 
   searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
