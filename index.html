@@ -6,6 +6,12 @@
   <title>Prices For Procedures</title>
   <link rel="stylesheet" href="main.css">
   <style>
+    body {
+      background-color: #ffffff;
+      color: #333;
+      font-family: Arial, sans-serif;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -14,12 +20,14 @@
 
     th, td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 12px;
       text-align: left;
+      font-size: 18px;
     }
 
     th {
-      background-color: #f4f4f4;
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
     }
 
     .result-container {
@@ -31,31 +39,93 @@
       display: flex;         
       justify-content: space-between;
       align-items: center;  
-      padding: 20px;
+      padding: 5px;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .header-logo {
+      width: 100px; 
+      height: 100px;
+      margin-right: 0px;
+    }
+
+    .header-title {
+      font-size: 32px; /* Bigger text */
+      color: white;
+      text-decoration: none;
+    }
+
+    .header-title:hover {
+      text-decoration: underline;
     }
 
     .header-link { 
-      color: rgb(255, 255, 255);  
-      font-size: 16px;
+      color: white;  
+      font-size: 20px;
       padding: 20px;
     }
 
     .header-link:hover {
       text-decoration: underline;  
-      color: rgb(140, 140, 140);
+      color: #ffffff;
     }
 
     .instructions {
       margin-top: 15px;
-      padding: 10px;
-      background: #f9f9f9;
+      padding: 15px;
+      background: #ffffff;
       border-left: 5px solid #007BFF;
+      font-size: 18px;
+      color: #333;
     }
+
+    .instructions ul {
+      margin: 10px 0;
+      padding-left: 20px;
+      color: #333;
+    }
+
+    .instructions li {
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-size: 26px;
+      color: rgb(33, 33, 33);
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 300px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 18px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
   </style>
 </head>
 <body>
   <header>
-    <h1>Prices For Procedures</h1>
+    <a href="index.html" class="header-content">
+      <img src="logo.png" alt="Website Logo" class="header-logo">
+      <h1 class="header-title">Prices For Procedures</h1>
+    </a>
     <a href="about_us.html" class="header-link">About Us</a>
   </header>
 
@@ -101,7 +171,7 @@
   </main>
   
   <footer>
-    <p>&copy; 2024 Prices For Procedures</p>
+    <p style="text-align: center;">&copy; 2024 Prices For Procedures</p>
   </footer>
 
   <script>
