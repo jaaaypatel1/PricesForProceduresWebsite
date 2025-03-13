@@ -6,12 +6,6 @@
   <title>Prices For Procedures</title>
   <link rel="stylesheet" href="main.css">
   <style>
-    body {
-      background-color: #ffffff;
-      color: #333;
-      font-family: Arial, sans-serif;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -21,14 +15,12 @@
 
     th, td {
       border: 1px solid #ddd;
-      padding: 12px;
+      padding: 8px;
       text-align: left;
-      font-size: 18px;
     }
 
     th {
-      background-color: #ffffff;
-      color: rgb(0, 0, 0);
+      background-color: #f4f4f4;
     }
 
     .result-container {
@@ -104,7 +96,7 @@
       padding: 10px;
       font-size: 18px;
       width: 100%;
-      max-width: 300px; /* Limit max width */
+      max-width: 600px; /* Limit max width */
       box-sizing: border-box;
     }
 
@@ -115,7 +107,7 @@
       color: white;
       border: none;
       cursor: pointer;
-      width: 100%; /* Make button full-width on small screens */
+      width: 50%; /* Make button full-width on small screens */
       max-width: 300px; /* Limit max width */
       box-sizing: border-box;
     }
@@ -125,7 +117,7 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
       .header-title {
         font-size: 24px;
       }
@@ -134,18 +126,13 @@
         font-size: 22px;
       }
 
-      input[type="text"], button {
-        width: 100%;
-        max-width: 100%; /* Allow full width on smaller screens */
-      }
-
       th, td {
         font-size: 16px; /* Smaller text for mobile */
         padding: 8px; /* Reduce padding for mobile */
       }
     }
 
-    @media (max-width: 480px) {
+    @media screen and (max-width: 480px) {
       .header-logo {
         width: 80px; /* Adjust logo size for smaller screens */
         height: 80px;
@@ -157,6 +144,14 @@
 
       h2 {
         font-size: 18px;
+      }
+      
+      table {
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 10px;
+            height: 100%;
+            table-layout: fixed;
       }
     }
   </style>
@@ -212,7 +207,7 @@
   </main>
   
   <footer>
-    <p style="text-align: center;">&copy; 2024 Prices For Procedures</p>
+    <p>&copy; 2024 Prices For Procedures</p>
   </footer>
 
   <script>
