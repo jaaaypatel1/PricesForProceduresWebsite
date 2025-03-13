@@ -6,6 +6,19 @@
   <title>Prices For Procedures</title>
   <link rel="stylesheet" href="main.css">
   <style>
+    /* General resets */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -23,10 +36,13 @@
       background-color: #f4f4f4;
     }
 
+    /* Ensure the result container stretches edge to edge */
     .result-container {
-      display: none; /* Initially hidden */
-      margin-top: 20px;
+      width: 120%; /* Full width */
+      padding: 0;  /* Remove unnecessary padding */
+
     }
+
 
     header {
       display: flex;         
@@ -76,7 +92,7 @@
       font-size: 18px;
       color: #333;
       text-align: left;
-      width: 100%;
+      width: 100%; /* Make it edge-to-edge */
       box-sizing: border-box; /* Prevents overflow */
     }
 
@@ -95,11 +111,12 @@
       color: rgb(33, 33, 33);
     }
 
+    /* Make input and button full width */
     input[type="text"] {
       padding: 12px; /* Increased padding for better appearance */
       font-size: 20px;
-      width: 50%;
-      max-width: 800px;
+      width: 50%; /* Full width */
+      max-width: 100%; /* Ensure it takes up the full width */
       box-sizing: border-box;
     }
 
@@ -110,8 +127,7 @@
       color: white;
       border: none;
       cursor: pointer;
-      width: 50%;
-      max-width: 500px;
+      width: 50%; /* Full width */
       box-sizing: border-box;
     }
 
@@ -124,40 +140,11 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      width: 50%;
-      box-sizing: border-box;
+      width: 100%; /* Full width container */
       padding: 0 10px; /* Added padding to prevent overflow */
     }
 
-
-    input[type="text"], button {
-      padding: 12px; /* Increased padding for better appearance */
-      font-size: 20px;
-      width: 50%; /* Makes input and button take the full width available */
-      max-width: 2000px; /* Limits the width of the input */
-    }
-
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .result-container {
-      display: none;
-      margin: 0; /* Remove any default margin */
-      padding: 100; /* Remove any default padding */
-      width: 90vw; /* Full viewport width */
-      box-sizing: border-box; /* Ensures padding/border are included in the width */
-    }
-
-
-
+    
     /* Responsive adjustments */
     @media screen and (max-width: 768px) {
       .header-title {
