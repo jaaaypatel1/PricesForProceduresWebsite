@@ -5,46 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prices For Procedures</title>
   <link rel="stylesheet" href="main.css">
-  <style>
-    /* General resets */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      padding: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      overflow-x: auto;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f4f4f4;
-    }
-
-    /* Ensure the result container stretches edge to edge */
-    .result-container {
-      width: 120%; /* Full width */
-      padding: 0;  /* Remove unnecessary padding */
-
-    }
-
-
-    header {
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prices For Procedures</title>
+    <style>
+      /* General resets */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+  
+      /* General Styles */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+  
+      header {
       display: flex;         
       justify-content: space-between;
       align-items: center;  
@@ -84,6 +68,108 @@
       color: #ffffff;
     }
 
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      width: 100vw;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .wrapper {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+
+    .search h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .search {
+      align-items: center;
+      text-align: center;
+      width: 100%; /* Full width container */
+    }
+
+    form {
+      display: flex;
+      gap: 0px;
+    }
+
+    form input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form button {
+      padding: 10px 20px;
+      border: none;
+      background: #0a9396;
+      color: white;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background: #005f73;
+    }
+
+    #results {
+      margin-top: 20px;
+    }
+
+    footer {
+      background: #005f73;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    /* Table Styling */
+    table {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100vw;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 16px;
+      height: 100%;
+      width:100%;
+      table-layout: auto;
+      overflow-x: auto;
+      }
+    
+
+    th, td {
+      border: 1px solid #c4c4c4;
+      padding: 0px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    /* Ensure the result container stretches edge to edge */
+    .result-container {
+      width: 100%;
+      padding: 0;
+      overflow-x: auto;
+    }
+
     .instructions {
       margin-top: 15px;
       padding: 15px;
@@ -92,8 +178,9 @@
       font-size: 18px;
       color: #333;
       text-align: left;
-      width: 100%; /* Make it edge-to-edge */
-      box-sizing: border-box; /* Prevents overflow */
+      width: 100%;
+      max-width: 600px;
+      box-sizing: border-box;
     }
 
     .instructions ul {
@@ -105,46 +192,7 @@
     .instructions li {
       margin-bottom: 5px;
     }
-
-    h2 {
-      font-size: 26px;
-      color: rgb(33, 33, 33);
-    }
-
-    /* Make input and button full width */
-    input[type="text"] {
-      padding: 12px; /* Increased padding for better appearance */
-      font-size: 20px;
-      width: 50%; /* Full width */
-      max-width: 100%; /* Ensure it takes up the full width */
-      box-sizing: border-box;
-    }
-
-    button {
-      padding: 12px; /* Increased padding for better appearance */
-      font-size: 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-      width: 50%; /* Full width */
-      box-sizing: border-box;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .search {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 100%; /* Full width container */
-      padding: 0 10px; /* Added padding to prevent overflow */
-    }
-
-    
+  
     /* Responsive adjustments */
     @media screen and (max-width: 768px) {
       .header-title {
@@ -156,7 +204,7 @@
       }
 
       th, td {
-        font-size: 12px; /* Smaller text for mobile */
+        font-size: 12px;
         padding: 8px;
       }
 
@@ -165,13 +213,15 @@
         margin-right: auto;
         font-size: 12px;
         height: 100%;
+        width:100%;
         table-layout: fixed;
+        overflow-x: auto;
       }
     }
 
     @media screen and (max-width: 480px) {
       .header-logo {
-        width: 80px; /* Adjust logo size for smaller screens */
+        width: 80px;
         height: 80px;
       }
 
@@ -184,8 +234,8 @@
       }
 
       th, td {
-        font-size: 10px; /* Smaller text for mobile */
-        padding: 6px; /* Reduce padding for mobile */
+        font-size: 10px;
+        padding: 6px;
       }
 
       table {
@@ -198,6 +248,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <a href="index.html" class="header-content">

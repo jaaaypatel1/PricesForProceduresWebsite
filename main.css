@@ -26,8 +26,9 @@ header h1 {
 main {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100vw;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 20px;
 }
 
@@ -36,7 +37,6 @@ main {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
   width: 100%;
 }
 
