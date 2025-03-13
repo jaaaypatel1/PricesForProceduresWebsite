@@ -75,6 +75,8 @@
       border-left: 5px solid #007BFF;
       font-size: 18px;
       color: #333;
+      text-align: left;
+      width : 100%;
     }
 
     .instructions ul {
@@ -93,23 +95,23 @@
     }
 
     input[type="text"] {
-      padding: 10px;
-      font-size: 18px;
-      width: 100%;
-      max-width: 600px; /* Limit max width */
-      box-sizing: border-box;
+      padding: 0px; /* Increase padding */
+      font-size: 20px; /* Bigger text */
+      width: 50%;
+      max-width: 800px; /* Increase max width */
+      box-sizing: size-box;
     }
 
     button {
-      padding: 10px 15px;
-      font-size: 18px;
+      padding: 0px; /* Increase padding */
+      font-size: 20px; /* Bigger text */
       background-color: #007BFF;
       color: white;
       border: none;
       cursor: pointer;
-      width: 50%; /* Make button full-width on small screens */
-      max-width: 300px; /* Limit max width */
-      box-sizing: border-box;
+      width: 50%;
+      max-width: 500px; /* Increase max width */
+      box-sizing: size-box;
     }
 
     button:hover {
@@ -121,6 +123,9 @@
       flex-direction: column;
       align-items: center; /* Ensures everything stays centered */
       text-align: center;
+    }
+    .searchform{
+      width: 100%;
     }
 
 
@@ -220,6 +225,7 @@
               <th>Description</th>
               <th>Gross Charge</th>
               <th>Discounted Price</th>
+              <th>Current Procedural Terminology (CPT®)</th>
             </tr>
           </thead>
           <tbody>
@@ -278,6 +284,7 @@
           <td>${item.desc}</td>
           <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
           <td>${item.discounted !== undefined ? `$${item.discounted.toFixed(2)}` : 'N/A'}</td>
+          <td>${item.cpt_code ? item.cpt_code : 'N/A'}</td> <!-- Display CPT code if available -->
         `;
         resultsTableBody.appendChild(row);
       });
