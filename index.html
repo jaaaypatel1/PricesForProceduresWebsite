@@ -10,8 +10,8 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      overflow-x:auto;
-      }
+      overflow-x: auto;
+    }
 
     th, td {
       border: 1px solid #ddd;
@@ -25,7 +25,7 @@
 
     .result-container {
       display: none; /* Initially hidden */
-      margin-top: 10px;
+      margin-top: 20px;
     }
 
     header {
@@ -76,7 +76,8 @@
       font-size: 18px;
       color: #333;
       text-align: left;
-      width : 100%;
+      width: 100%;
+      box-sizing: border-box; /* Prevents overflow */
     }
 
     .instructions ul {
@@ -95,23 +96,23 @@
     }
 
     input[type="text"] {
-      padding: 0px; /* Increase padding */
-      font-size: 20px; /* Bigger text */
+      padding: 12px; /* Increased padding for better appearance */
+      font-size: 20px;
       width: 50%;
-      max-width: 800px; /* Increase max width */
-      box-sizing: size-box;
+      max-width: 800px;
+      box-sizing: border-box;
     }
 
     button {
-      padding: 0px; /* Increase padding */
-      font-size: 20px; /* Bigger text */
+      padding: 12px; /* Increased padding for better appearance */
+      font-size: 20px;
       background-color: #007BFF;
       color: white;
       border: none;
       cursor: pointer;
       width: 50%;
-      max-width: 500px; /* Increase max width */
-      box-sizing: size-box;
+      max-width: 500px;
+      box-sizing: border-box;
     }
 
     button:hover {
@@ -121,12 +122,40 @@
     .search {
       display: flex;
       flex-direction: column;
-      align-items: center; /* Ensures everything stays centered */
+      align-items: center;
       text-align: center;
+      width: 50%;
+      box-sizing: border-box;
+      padding: 0 10px; /* Added padding to prevent overflow */
     }
-    .searchform{
-      width: 100%;
+
+
+    input[type="text"], button {
+      padding: 12px; /* Increased padding for better appearance */
+      font-size: 20px;
+      width: 50%; /* Makes input and button take the full width available */
+      max-width: 2000px; /* Limits the width of the input */
     }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result-container {
+      display: none;
+      margin: 0; /* Remove any default margin */
+      padding: 100; /* Remove any default padding */
+      width: 90vw; /* Full viewport width */
+      box-sizing: border-box; /* Ensures padding/border are included in the width */
+    }
+
 
 
     /* Responsive adjustments */
@@ -140,16 +169,16 @@
       }
 
       th, td {
-        font-size: 10px; /* Smaller text for mobile */
-        padding: 8px; /* Reduce padding for mobile */
+        font-size: 12px; /* Smaller text for mobile */
+        padding: 8px;
       }
 
       table {
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 5px;
-            height: 100%;
-            table-layout: fixed;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 12px;
+        height: 100%;
+        table-layout: fixed;
       }
     }
 
@@ -168,16 +197,16 @@
       }
 
       th, td {
-        font-size: 8px; /* Smaller text for mobile */
+        font-size: 10px; /* Smaller text for mobile */
         padding: 6px; /* Reduce padding for mobile */
       }
 
       table {
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 5px;
-            height: 100%;
-            table-layout: fixed;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 10px;
+        height: 100%;
+        table-layout: fixed;
       }
     }
   </style>
@@ -205,9 +234,9 @@
         <p><strong>How to Use This Website:</strong></p>
         <ul>
           <li>Enter the name of a procedure or medication in the search bar above.</li>
-            <ul>
-              <li>For example, if you are searching for a brain MRI, search “MRI Brain.”</li>
-            </ul>
+          <ul>
+            <li>For example, if you are searching for a brain MRI, search “MRI Brain.”</li>
+          </ul>
           <li>Click the <strong>Search</strong> button to see the results.</li>
           <li>The table below will display relevant hospital names, addresses, and prices.</li>
           <li>If no results are found, try refining your search term.</li>
@@ -241,73 +270,72 @@
   </footer>
 
   <script>
-  const searchForm = document.getElementById('searchForm');
-  const queryInput = document.getElementById('query');
-  const resultsTableBody = document.querySelector('#results-table tbody');
-  const resultCount = document.getElementById('resultCount');
-  const resultContainer = document.getElementById('resultContainer');
+    const searchForm = document.getElementById('searchForm');
+    const queryInput = document.getElementById('query');
+    const resultsTableBody = document.querySelector('#results-table tbody');
+    const resultCount = document.getElementById('resultCount');
+    const resultContainer = document.getElementById('resultContainer');
 
-  async function fetchData() {
-    try {
-      const response = await fetch('data.json');
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return [];
+    async function fetchData() {
+      try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+      }
     }
-  }
 
-  async function displayResults(query) {
-    resultsTableBody.innerHTML = ''; 
+    async function displayResults(query) {
+      resultsTableBody.innerHTML = ''; 
 
-    const data = await fetchData();
-    if (!Array.isArray(data)) return; 
+      const data = await fetchData();
+      if (!Array.isArray(data)) return; 
 
-    let totalResults = 0;
+      let totalResults = 0;
 
-    data.forEach(hospital => { 
-      const hospitalName = hospital.name;
-      const hospitalAddress = hospital.addr;
+      data.forEach(hospital => { 
+        const hospitalName = hospital.name;
+        const hospitalAddress = hospital.addr;
 
-      const filteredCharges = hospital.charges.filter(item =>
-        item.desc.toLowerCase().includes(query.toLowerCase())
-      );
+        const filteredCharges = hospital.charges.filter(item =>
+          item.desc.toLowerCase().includes(query.toLowerCase())
+        );
 
-      totalResults += filteredCharges.length;
+        totalResults += filteredCharges.length;
 
-      filteredCharges.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${hospitalName}</td>
-          <td>${hospitalAddress}</td>
-          <td>${item.desc}</td>
-          <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
-          <td>${item.discounted !== undefined ? `$${item.discounted.toFixed(2)}` : 'N/A'}</td>
-          <td>${item.cpt_code ? item.cpt_code : 'N/A'}</td> <!-- Display CPT code if available -->
-        `;
-        resultsTableBody.appendChild(row);
+        filteredCharges.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${hospitalName}</td>
+            <td>${hospitalAddress}</td>
+            <td>${item.desc}</td>
+            <td>${item.cost !== undefined ? `$${item.cost.toFixed(2)}` : 'N/A'}</td>
+            <td>${item.discounted !== undefined ? `$${item.discounted.toFixed(2)}` : 'N/A'}</td>
+            <td>${item.cpt_code ? item.cpt_code : 'N/A'}</td>
+          `;
+          resultsTableBody.appendChild(row);
+        });
       });
+
+      if (totalResults > 0) {
+        resultCount.textContent = `Results found: ${totalResults}`;
+        resultContainer.style.display = 'block'; // Show results
+      } else {
+        resultCount.textContent = `No results found for "${query}"`;
+        resultsTableBody.innerHTML = `<tr><td colspan="6">No matching results</td></tr>`;
+        resultContainer.style.display = 'block'; // Show "No results" message
+      }
+    }
+
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = queryInput.value.trim();
+      if (query) {
+        displayResults(query);
+      }
     });
-
-    if (totalResults > 0) {
-      resultCount.textContent = `Results found: ${totalResults}`;
-      resultContainer.style.display = 'block'; // Show results
-    } else {
-      resultCount.textContent = `No results found for "${query}"`;
-      resultsTableBody.innerHTML = `<tr><td colspan="5">No matching results</td></tr>`;
-      resultContainer.style.display = 'block'; // Show "No results" message
-    }
-  }
-
-  searchForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const query = queryInput.value.trim();
-    if (query) {
-      displayResults(query);
-    }
-  });
-
   </script>
 </body>
 </html>

@@ -45,7 +45,6 @@ def reformat_hospital_data(input_file, output_file):
     with open(output_file, 'w') as file:
         json.dump(output_data, file, indent=2)
 
-    print(f"✅ Optimized data has been written to {output_file}")
 
 # Main execution
 input_file = input("Enter the input file name: ").strip()
